@@ -1,0 +1,20 @@
+{
+  "name": "rn",
+  "version": "1.0.0",
+  "description": "1. kakao-friend-list : 카카오톡 친구목록",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hanjeonga/RN.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hanjeonga/RN/issues"
+  },
+  "homepage": "https://github.com/hanjeonga/RN#readme"
+}
