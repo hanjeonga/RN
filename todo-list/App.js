@@ -1,7 +1,14 @@
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getCalendarColumns, getDayColor, getDayText } from "./src/utils/util";
 import dayjs from "dayjs";
+import { Ionicons } from "@expo/vector-icons";
 
 const columnSize = 35;
 
@@ -18,6 +25,12 @@ const Columns = ({ text, color, opacity }) => (
   </View>
 );
 
+const ArrowButton = ({ name, onPress }) => (
+  <TouchableOpacity hitSlop={15}>
+    <Ionicons name={name} size={20} color={"#404040"} onPress={onPress} />
+  </TouchableOpacity>
+);
+
 export default function App() {
   const now = dayjs();
   const columns = getCalendarColumns(now);
@@ -29,23 +42,33 @@ export default function App() {
       <View>
         <View
           style={{
-            width: "100%",
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
             marginVertical: 15,
           }}
         >
-          <Text style={{ color: "#404040", fontSize: 20 }}>
-            {currentDateText}
-          </Text>
+          <ArrowButton name={"chevron-back"} onPress={() => {}} />
+          <TouchableOpacity hitSlop={15}>
+            <Text style={{ color: "#404040", fontSize: 20 }}>
+              {currentDateText}
+            </Text>
+          </TouchableOpacity>
+          <ArrowButton name={"chevron-forward"} onPress={() => {}} />
         </View>
 
         <View style={{ flexDirection: "row" }}>
           {[0, 1, 2, 3, 4, 5, 6].map((day) => {
             const dayText = getDayText(day);
             const color = getDayColor(day);
-            return <Columns text={dayText} color={color} opacity={1} />;
+            return (
+              <Columns
+                key={`day_${dayText}`}
+                text={dayText}
+                color={color}
+                opacity={1}
+              />
+            );
           })}
         </View>
       </View>
@@ -71,6 +94,7 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <FlatList
         data={columns}
+        keyExtractor={(_, idx) => `column_${idx}`}
         numColumns={7}
         renderItem={renderItem}
         ListHeaderComponent={ListHeaderComponent}
