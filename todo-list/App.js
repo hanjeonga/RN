@@ -9,20 +9,25 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { getCalendarColumns, getDayColor, getDayText } from "./src/utils/util";
 import dayjs from "dayjs";
 import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
 
 const columnSize = 35;
 
-const Columns = ({ text, color, opacity }) => (
-  <View
+const Columns = ({ text, color, opacity, disabled, onPress, isSelected }) => (
+  <TouchableOpacity
+    disabled={disabled}
+    onPress={onPress}
     style={{
       width: columnSize,
       height: columnSize,
       justifyContent: "center",
       alignItems: "center",
+      borderRadius: "50%",
+      backgroundColor: isSelected ? "#efefef" : "transparent",
     }}
   >
     <Text style={{ color, opacity }}>{text}</Text>
-  </View>
+  </TouchableOpacity>
 );
 
 const ArrowButton = ({ name, onPress }) => (
@@ -33,10 +38,11 @@ const ArrowButton = ({ name, onPress }) => (
 
 export default function App() {
   const now = dayjs();
-  const columns = getCalendarColumns(now);
+  const [selectedDate, setSelectedDate] = useState(now);
+  const columns = getCalendarColumns(selectedDate);
 
   const ListHeaderComponent = () => {
-    const currentDateText = dayjs(now).format("YYYY-MM-DD");
+    const currentDateText = dayjs(selectedDate).format("YYYY-MM-DD");
 
     return (
       <View>
@@ -67,6 +73,7 @@ export default function App() {
                 text={dayText}
                 color={color}
                 opacity={1}
+                disabled={true}
               />
             );
           })}
@@ -79,13 +86,21 @@ export default function App() {
     const dateText = dayjs(date).get("date");
     const day = dayjs(date).get("day");
     const color = day === 0 ? "#e67639" : day === 6 ? "#5872d1" : "#2b2b2b";
-    const isCurrentMonth = dayjs(date).isSame(now, "month");
+    const isCurrentMonth = dayjs(date).isSame(selectedDate, "month");
+
+    const onPress = () => {
+      setSelectedDate(date);
+    };
+
+    const isSelected = dayjs(date).isSame(selectedDate, "date");
 
     return (
       <Columns
         text={dateText}
         color={color}
         opacity={isCurrentMonth ? 1 : 0.4}
+        onPress={onPress}
+        isSelected={isSelected}
       />
     );
   };
