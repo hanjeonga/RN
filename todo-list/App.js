@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getCalendarColumns, getDayColor, getDayText } from "./src/utils/util";
+import { getDayColor, getDayText } from "./src/utils/util";
 import dayjs from "dayjs";
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import useCalendar from "./src/hook/useCalendar";
 
 const columnSize = 35;
 
@@ -38,29 +38,17 @@ const ArrowButton = ({ name, onPress }) => (
 );
 
 export default function App() {
-  const now = dayjs();
-  const [selectedDate, setSelectedDate] = useState(now);
-  const [onDatePicker, setOnDatePicker] = useState(false);
-  const columns = getCalendarColumns(selectedDate);
-
-  const hideDatePicker = () => {
-    setOnDatePicker(false);
-  };
-
-  const handleConfirm = (date) => {
-    setSelectedDate(dayjs(date));
-    hideDatePicker();
-  };
-
-  const onPressLeftArrow = () => {
-    const prevSelectedDate = dayjs(selectedDate).subtract(1, "month");
-    setSelectedDate(prevSelectedDate);
-  };
-
-  const onPressRightArrow = () => {
-    const nextSelectedDate = dayjs(selectedDate).add(1, "month");
-    setSelectedDate(nextSelectedDate);
-  };
+  const {
+    selectedDate,
+    onDatePicker,
+    columns,
+    showDatePicker,
+    hideDatePicker,
+    handleConfirm,
+    onPressLeftArrow,
+    onPressRightArrow,
+    handleSelectedDate,
+  } = useCalendar();
 
   const ListHeaderComponent = () => {
     const currentDateText = dayjs(selectedDate).format("YYYY-MM-DD");
@@ -76,7 +64,7 @@ export default function App() {
           }}
         >
           <ArrowButton name={"chevron-back"} onPress={onPressLeftArrow} />
-          <TouchableOpacity hitSlop={15} onPress={() => setOnDatePicker(true)}>
+          <TouchableOpacity hitSlop={15} onPress={showDatePicker}>
             <Text style={{ color: "#404040", fontSize: 20 }}>
               {currentDateText}
             </Text>
@@ -110,7 +98,7 @@ export default function App() {
     const isCurrentMonth = dayjs(date).isSame(selectedDate, "month");
 
     const onPress = () => {
-      setSelectedDate(date);
+      handleSelectedDate(date);
     };
 
     const isSelected = dayjs(date).isSame(selectedDate, "date");
