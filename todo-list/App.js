@@ -10,6 +10,7 @@ import { getCalendarColumns, getDayColor, getDayText } from "./src/utils/util";
 import dayjs from "dayjs";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 const columnSize = 35;
 
@@ -39,7 +40,27 @@ const ArrowButton = ({ name, onPress }) => (
 export default function App() {
   const now = dayjs();
   const [selectedDate, setSelectedDate] = useState(now);
+  const [onDatePicker, setOnDatePicker] = useState(false);
   const columns = getCalendarColumns(selectedDate);
+
+  const hideDatePicker = () => {
+    setOnDatePicker(false);
+  };
+
+  const handleConfirm = (date) => {
+    setSelectedDate(dayjs(date));
+    hideDatePicker();
+  };
+
+  const onPressLeftArrow = () => {
+    const prevSelectedDate = dayjs(selectedDate).subtract(1, "month");
+    setSelectedDate(prevSelectedDate);
+  };
+
+  const onPressRightArrow = () => {
+    const nextSelectedDate = dayjs(selectedDate).add(1, "month");
+    setSelectedDate(nextSelectedDate);
+  };
 
   const ListHeaderComponent = () => {
     const currentDateText = dayjs(selectedDate).format("YYYY-MM-DD");
@@ -54,13 +75,13 @@ export default function App() {
             marginVertical: 15,
           }}
         >
-          <ArrowButton name={"chevron-back"} onPress={() => {}} />
-          <TouchableOpacity hitSlop={15}>
+          <ArrowButton name={"chevron-back"} onPress={onPressLeftArrow} />
+          <TouchableOpacity hitSlop={15} onPress={() => setOnDatePicker(true)}>
             <Text style={{ color: "#404040", fontSize: 20 }}>
               {currentDateText}
             </Text>
           </TouchableOpacity>
-          <ArrowButton name={"chevron-forward"} onPress={() => {}} />
+          <ArrowButton name={"chevron-forward"} onPress={onPressRightArrow} />
         </View>
 
         <View style={{ flexDirection: "row" }}>
@@ -113,7 +134,13 @@ export default function App() {
         numColumns={7}
         renderItem={renderItem}
         ListHeaderComponent={ListHeaderComponent}
-      ></FlatList>
+      />
+      <DateTimePicker
+        isVisible={onDatePicker}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
     </SafeAreaView>
   );
 }
