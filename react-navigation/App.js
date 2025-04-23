@@ -3,25 +3,27 @@ import { NavigationContainer } from "@react-navigation/native";
 // import ScreenA from "./src/ScreenA";
 // import ScreenB from "./src/ScreenB";
 // import NestedStackNavigation from "./src/NestedStackNavigation";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import TabA from "./src/TabA";
-import TabB from "./src/TabB";
-import { Ionicons } from "@expo/vector-icons";
+// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// import TabA from "./src/TabA";
+// import TabB from "./src/TabB";
+// import { Ionicons } from "@expo/vector-icons";
+// import NestedStackNavigation from "./src/NestedStackNavigation";
+import BottomTabNavigator from "./src/BottomTabNavigator";
 
 // const Stack = createNativeStackNavigator();
-const BottomTab = createBottomTabNavigator();
+// const BottomTab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="NestedBottomTab"
+          component={BottomTabNavigator}
+        ></Stack.Screen>
         <Stack.Screen name="ScreenA" component={ScreenA}></Stack.Screen>
         <Stack.Screen name="ScreenB" component={ScreenB}></Stack.Screen>
-        <Stack.Screen
-          name="NestedNavigator"
-          component={NestedStackNavigation}
-        ></Stack.Screen>
-      </Stack.Navigator> */}
-      <BottomTab.Navigator>
+      </Stack.Navigator>
+      {/* <BottomTab.Navigator>
         <BottomTab.Screen
           name="TabA"
           component={TabA}
@@ -29,10 +31,10 @@ export default function App() {
         />
         <BottomTab.Screen
           name="TabB"
-          component={TabB}
+          component={NestedStackNavigation}
           options={{ tabBarIcon: () => <Ionicons name="settings" size={20} /> }}
         />
-      </BottomTab.Navigator>
+      </BottomTab.Navigator> */}
     </NavigationContainer>
   );
 }
