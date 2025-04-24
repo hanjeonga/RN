@@ -6,7 +6,7 @@ import ImageDetailScreen from "../screen/ImageDetailScreen";
 const Stack = createNativeStackNavigator();
 const RootStackNavigation = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
       <Stack.Screen name="ImageDetail" component={ImageDetailScreen} />
     </Stack.Navigator>
