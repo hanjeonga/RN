@@ -11,3 +11,5 @@
 4. react-navigation : React Native Navigation Sample
 
 5. component : Reusable Components (Typograpy, Button, Icons, Spacer, Header, TabIcon...)
+
+6. backgraound : 핸드폰 배경화면 앱
